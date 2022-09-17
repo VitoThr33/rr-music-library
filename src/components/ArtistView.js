@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useParams, Link, useHistory } from 'react-router-dom'
+import Spinner from './Spinner'
 
-function ArtistView() {
-    const navigate = useNavigate()
+const ArtistView = () => {
     const { id } = useParams()
+    const history = useHistory()
     const [ artistData, setArtistData ] = useState([])
     
-	useEffect(() => {
+    useEffect(() => {
         const API_URL = `http://localhost:4000/album/${id}`
         const fetchData = async () => {
             const response = await fetch(API_URL)
@@ -14,35 +15,32 @@ function ArtistView() {
             setArtistData(resData.results)
         }
         fetchData()
-	}, [id])
+    }, [id])
 
-    const justAlbums = artistData.filter(entry => entry.collectionType === 'Album')
-
-    const renderAlbums = justAlbums.map((album, i) =>{
+    const allAlbums = artistData.filter(entity => entity.collectionType === 'Album')
+    .map((album, i) => {
         return (
             <div key={i}>
                 <Link to={`/album/${album.collectionId}`}>
                     <p>{album.collectionName}</p>
                 </Link>
-            </div>
-        )
-    })
+            </div>)
+        })
 
     const navButtons = () => {
-        return(
+        return (
             <div>
-                <button onClick={() => navigate(-1)}>Back</button>
-                |
-                <button onClick={() => navigate('/')}>Home</button>
+                <button onClick={() => {history.push('/')}}>Home</button> |
+                <button onClick={() => {history.goBack()}}>Back</button>
             </div>
         )
     }
 
     return (
         <div>
-            {artistData.length > 0 ? <h2>{artistData[0].artistName}</h2> : <h2>Loading...</h2>}
+            {artistData.length > 0 ? <h2>{artistData[0].artistName}</h2> : <Spinner />}
             {navButtons()}
-            {renderAlbums}
+            {allAlbums}
         </div>
     )
 }
