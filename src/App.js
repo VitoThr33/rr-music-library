@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Gallery from './Gallery'
-import SearchBar from './SearchBar'
-import AlbumView from './AlbumView'
-import ArtistView from './ArtistView'
-
+import Gallery from './components/Gallery'
+import SearchBar from './components/SearchBar'
+import AlbumView from './components/AlbumView'
+import ArtistView from './components/ArtistView'
+import { Fragment } from 'react'
 
 function App() {
 	let [search, setSearch] = useState('')
@@ -54,6 +54,5 @@ function App() {
 }
 
 export default App;
-
 
 
